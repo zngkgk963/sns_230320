@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/user")
 @Controller
 public class UserController {
+
 	/**
 	 * 회원가입 화면
 	 * @param model
@@ -31,6 +32,7 @@ public class UserController {
 		model.addAttribute("view", "user/signIn");
 		return "template/layout";
 	}
+	
 	/**
 	 * 로그아웃
 	 * @param session
@@ -38,14 +40,12 @@ public class UserController {
 	 */
 	@RequestMapping("/sign_out")
 	public String signOut(HttpSession session) {
-		// 세션에 있는 내용을 비운다.
+		// 세션 비우기
 		session.removeAttribute("userId");
-		session.removeAttribute("userLoginId");
 		session.removeAttribute("userName");
+		session.removeAttribute("userLoginId");
 		
-		// 로그인 화면으로 이동 => redirect
-		return "redirect:/user/sign_in_view";
+		// 타임라인 화면으로 이동 
+		return "redirect:/timeline/timeline_view";
 	}
-	
-	
 }
