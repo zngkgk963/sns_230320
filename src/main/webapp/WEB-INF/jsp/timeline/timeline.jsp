@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="d-flex justify-content-center">
 	<div class="contents-box">
 		<%-- 글쓰기 영역 --%>
@@ -9,8 +10,14 @@
 			<%-- 이미지 업로드를 위한 아이콘과 업로드 버튼을 한 행에 멀리 떨어뜨리기 위한 div --%>
 			<div class="d-flex justify-content-between">
 				<div class="file-upload d-flex">
+					<%-- file 태그를 숨겨두고 이미지를 클릭하면 file 태그를 클릭한 것처럼 효과를 준다 --%>
+					<input type="file" id="file" accept=".jpg, .jpeg, .png, .gif" class="d-none">
+					
 					<%-- 이미지에 마우스 올리면 마우스커서가 링크 커서가 변하도록 a 태그 사용 --%>
 					<a href="#" id="fileUploadBtn"><img width="35" src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-image-512.png"></a>
+					
+					<%-- 업로드 된 임시 파일 이름 저장되는 곳 --%>
+					<div id="fileName" class="ml-2"></div>
 				</div>
 				<button id="writeBtn" class="btn btn-info">게시</button>
 			</div>
@@ -19,12 +26,13 @@
 		
 		<%-- 타임라인 영역 --%>
 		<div class="timeline-box my-5">
+		
+			<c:forEach items="${postList}" var="post">
 			<%-- 카드1 --%>
-			<c:forEach itmes="${postList}" var="post">
 			<div class="card border rounded mt-3">
 				<%-- 글쓴이, 더보기(삭제) --%>
 				<div class="p-2 d-flex justify-content-between">
-					<span class="font-weight-bold">글쓴이</span>
+					<span class="font-weight-bold">글쓴이${post.userId}</span>
 					
 					<%-- 더보기 ... --%>
 					<a href="#" class="more-btn">
@@ -34,7 +42,7 @@
 				
 				<%-- 카드 이미지 --%>
 				<div class="card-img">
-					<img src="https://cdn.pixabay.com/photo/2023/07/12/20/09/seiser-alm-8123284_1280.jpg" class="w-100" alt="본문 이미지">
+					<img src="${post.imagePath}" class="w-100" alt="본문 이미지">
 				</div>
 				
 				<%-- 좋아요 --%>
@@ -47,8 +55,8 @@
 				
 				<%-- 글 --%>
 				<div class="card-post m-3">
-					<span class="font-weight-bold">글쓴이</span>
-					<span>글 내용</span>
+					<span class="font-weight-bold">글쓴이${post.userId}</span>
+					<span>${post.content}</span>
 				</div>
 				
 				<%-- 댓글 제목 --%>
@@ -77,6 +85,36 @@
 				</div> <%--// 댓글 목록 끝 --%>
 			</div> <%--// 카드1 끝 --%>
 			</c:forEach>
+			
 		</div> <%--// 타임라인 영역 끝  --%>
 	</div> <%--// contents-box 끝  --%>
 </div>
+
+<script>
+$(document).ready(function() {
+	// 파일이미지 클릭 => 숨겨져 있는 type="file"을 동작시킨다.
+	$('#fileUploadBtn').on('click', function(e) {
+		e.preventDefault(); // a 태그의 스크롤 올라가는 현상 방지
+		$('#file').click(); // input file을 클릭한 것과 같은 효과
+	});
+	
+	// 사용자가 이미지를 선택하는 순간 유효성 확인 및 업로드 된 파일명 노출
+	$('#file').on('change', function(e) {
+		let fileName = e.target.files[0].name; // path-g6f39ad362_640.png
+		console.log(fileName);
+		
+		// 확장자 유효성 확인
+		let ext = fileName.split(".").pop().toLowerCase();
+		//alert(ext);
+		if (ext != "jpg" && ext != "png" && ext != "gif" && ext != "jpeg") {
+			alert("이미지 파일만 업로드 할 수 있습니다.");
+			$('#file').val("");  // 파일 태그에 파일 제거(보이지 않지만 업로드 될 수 있으므로 주의)
+			$('#fileName').text(''); // 파일 이름 비우기
+			return;
+		}
+		
+		// 유효성 통과한 이미지는 상자에 업로드 된 파일 이름 노출
+		$('#fileName').text(fileName);
+	});
+});
+</script>
