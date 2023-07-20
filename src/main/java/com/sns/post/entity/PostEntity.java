@@ -18,23 +18,25 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @ToString
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Table(name = "post")
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Table(name = "post")
 @Entity
 public class PostEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
+	@Column(name = "userId")
 	private int userId;
 	
 	private String content;
 	
+	@Column(name = "imagePath")
 	private String imagePath;
-	
+
 	@UpdateTimestamp
 	@Column(name = "createdAt", updatable = false)
 	private ZonedDateTime createdAt;

@@ -15,14 +15,11 @@ import com.sns.post.entity.PostEntity;
 @Controller
 public class TimelineController {
 
-	//PostBO
 	@Autowired
 	private PostBO postBO;
 	
-	
 	@GetMapping("/timeline_view")
 	public String timelineView(Model model) {
-		// postList  jpa
 		List<PostEntity> postList = postBO.getPostList();
 		
 		model.addAttribute("postList", postList);
