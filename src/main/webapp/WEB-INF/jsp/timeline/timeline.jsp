@@ -80,7 +80,7 @@
 					<%-- 댓글 쓰기 --%>
 					<div class="comment-write d-flex border-top mt-2">
 						<input type="text" class="form-control border-0 mr-2 comment-input" placeholder="댓글 달기"/> 
-						<button type="button" class="comment-btn btn btn-light">게시</button>
+						<button type="button" class="comment-btn btn btn-light" data-post-id="${post.id}">게시</button>
 					</div>
 				</div> <%--// 댓글 목록 끝 --%>
 			</div> <%--// 카드1 끝 --%>
@@ -166,6 +166,17 @@ $(document).ready(function() {
 				alert("글 저장에 실패했습니다. 관리자에게 문의해주세요.");
 			}
 		});  // --- ajax 끝
+	});
+	
+	// 댓글 작성
+	$('.comment-btn').on('click', function() {
+		//alert("111");
+		let postId = $(this).data('post-id');
+		// 댓글 내용 가져오기
+		
+		// ajax
+		
+		
 	});
 });
 </script>
