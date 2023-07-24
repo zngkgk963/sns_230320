@@ -21,6 +21,7 @@ public class TimelineController {
 	@GetMapping("/timeline_view")
 	public String timelineView(Model model) {
 		List<PostEntity> postList = postBO.getPostList();
+		// commentList => model
 		
 		model.addAttribute("postList", postList);
 		model.addAttribute("view", "timeline/timeline");

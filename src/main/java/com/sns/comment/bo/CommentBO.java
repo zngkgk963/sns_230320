@@ -7,17 +7,11 @@ import com.sns.comment.dao.CommentMapper;
 
 @Service
 public class CommentBO {
+
+	@Autowired
+	private CommentMapper commentMapper;
 	
-	@Autowired CommentMapper commentMapper;
-	
-//	postId
-//	userId
-//	content
-	public int addComment(int postId, int userId, 
-			String content) {
-		
-		
-		return commentMapper.insertComment(postId, userId, content);
+	public int addComment(int userId, int postId, String content) {
+		return commentMapper.insertComment(userId, postId, content);
 	}
-	
 }

@@ -173,10 +173,8 @@ $(document).ready(function() {
 		//alert("111");
 		let postId = $(this).data('post-id');
 		// 댓글 내용 가져오기
-		
+		alert(postId);
 		// ajax
-		
-		
 	});
 });
 </script>
