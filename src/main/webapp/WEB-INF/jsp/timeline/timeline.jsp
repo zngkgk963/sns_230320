@@ -55,7 +55,7 @@
 				
 				<%-- 글 --%>
 				<div class="card-post m-3">
-					<span class="font-weight-bold">${card.post.userId}</span>
+					<span class="font-weight-bold">${card.user.loginId}</span>
 					<span>${card.post.content}</span>
 				</div>
 				
@@ -172,15 +172,30 @@ $(document).ready(function() {
 	$('.comment-btn').on('click', function() {
 		//alert("111");
 		let postId = $(this).data('post-id');
+		//alert(postId);
+		
 		// 1) 댓글 내용 가져오기
 		//let comment = $(this).siblings('input').val().trim();
-		
+	
 		// 2) 댓글 내용 가져오기
 		let comment = $(this).prev().val().trim();
-		alert(comment);
+		//alert(comment);
 		
 		// ajax
+		$.ajax({
+			type:"post"
+			, url:"/comment/create"
+			, data:{"postId":postId, "content":content}
 		
+			, success:function(data) {
+				if (data.code == 1) {
+					location.reload(true);
+				}
+			}
+			, error:function(request, status, error) {
+				alert("댓글 쓰기 실패했습니다.");
+			}
+		});
 	});
 });
 </script>

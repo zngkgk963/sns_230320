@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.sns.comment.dao.CommentMapper;
 import com.sns.comment.domain.Comment;
 import com.sns.comment.domain.CommentView;
+import com.sns.user.bo.UserBO;
 import com.sns.user.entity.UserEntity;
 
 @Service
@@ -16,6 +17,9 @@ public class CommentBO {
 
 	@Autowired
 	private CommentMapper commentMapper;
+	
+	@Autowired
+	private UserBO userBO;
 	
 	public int addComment(int userId, int postId, String content) {
 		return commentMapper.insertComment(userId, postId, content);
@@ -30,7 +34,7 @@ public class CommentBO {
 		// 글에 해당하는 댓글들
 		List<Comment> commentList = commentMapper.selectCommentListByPostId(postId);
 		
-		// 반복문 순회		comment => commentView		=> commentViewList에 담는다.
+		// 반복문 순회   comment => commentView     => commentViewList에 담는다.
 		for (Comment comment : commentList) {
 			CommentView commentView = new CommentView();
 			commentView.setComment(comment);
@@ -40,5 +44,8 @@ public class CommentBO {
 			
 			commentViewList.add(commentView);
 		}
+		
+		return commentViewList;
 	}
+	
 }
