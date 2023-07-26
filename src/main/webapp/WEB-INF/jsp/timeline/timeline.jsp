@@ -47,10 +47,19 @@
 				
 				<%-- 좋아요 --%>
 				<div class="card-like m-3">
-					<a href="#" class="like-btn" data-post-id="${card.post.id}">
-						<img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="18" height="18" alt="filled heart">
-					</a>
-					좋아요 100개
+					<%-- 좋아요가 눌려져 있지 않을 때 or 비로그인 => 빈 하트 --%>
+					<c:if test="${card.filledLike eq false}">
+						<a href="#" class="like-btn" data-post-id="${card.post.id}">
+							<img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="18" height="18" alt="filled heart">
+						</a>
+					</c:if>
+					<%-- 좋아요가 눌려져 있을 때 => 채워진 하트 --%>
+					<c:if test="${card.filledLike}">
+						<a href="#" class="like-btn" data-post-id="${card.post.id}">
+							<img src="https://www.iconninja.com/files/527/809/128/heart-icon.png" width="18" height="18" alt="filled heart">
+						</a>
+					</c:if>
+					좋아요 ${card.likeCount}개
 				</div>
 				
 				<%-- 글 --%>
@@ -230,20 +239,25 @@ $(document).ready(function() {
 	$('.like-btn').on('click', function(e) {
 		e.preventDefault();
 		
-		let userId = "${userId}";
-		alert(userId);
+		/* let userId = "${userId}";
+		alert(userId); */
 		
 		let postId = $(this).data('post-id');
 		//alert(postId);
 		
 		$.ajax({
-			url:"/like/" + postId	//			/like/3
+			url:"/like/" + postId       //     /like/3
 			, success:function(data) {
-				// 비로그인 시 로그인 페이지로 이동
-				alert(data.)
+				if (data.code == 1) {
+					location.reload();
+				} else if (data.code == 300) {
+					// 비로그인 시 로그인 페이지로 이동
+					alert(data.errorMessage);	
+					location.href = "/user/sign_in_view";
+				}
 			}
 			, error:function(request, status, error) {
-				alert("좋아요를 하는데 실패했습니다");
+				alert("좋아요를 하는데 실패했습니다.");
 			}
 		});
 	});
