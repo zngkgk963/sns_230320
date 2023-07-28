@@ -105,23 +105,21 @@
 	</div> <%--// contents-box 끝  --%>
 </div>
 
-
 <!-- Modal -->
 <div class="modal fade" id="modal">
 	<%-- modal-sm: 작은 모달 --%>
 	<%-- modal-dialog-centered: 모달창을 수직 기준 가운데 위치 --%>
- 	<div class="modal-dialog modal-sm modal-dialog-centered">
+	<div class="modal-dialog modal-sm modal-dialog-centered">
 		<div class="modal-content text-center">
 			<div class="py-3 border-bottom">
-	   			<a href="#" id="deletePostBtn">삭제하기</a>			
-			</div>
-			<div class="py-3">
-	   			<a href="#" data-dismiss="modal">취소하기</a>			
-			</div>
-    	</div>
-  	</div>
+      			<a href="#" id="deletePostBtn">삭제하기</a>
+      		</div>
+      		<div class="py-3">
+      			<a href="#" data-dismiss="modal">취소하기</a>
+      		</div>
+		</div>
+	</div>
 </div>
-
 
 <script>
 $(document).ready(function() {
@@ -286,7 +284,7 @@ $(document).ready(function() {
 	$('.more-btn').on('click', function(e) {
 		e.preventDefault(); // a 태그 위로 올라감 방지
 		
-		let postId = $(this).data('post-id');	// getting
+		let postId = $(this).data('post-id');   // getting
 		//alert(postId);
 		
 		// 한개인 모달 태그에(재활용) data-post-id를 심어줌
@@ -294,28 +292,28 @@ $(document).ready(function() {
 	});
 	
 	// 모달 안에 있는 삭제하기 클릭 => 진짜 삭제
-	$('#modal #deletePostBtn').on('click', function() {
+	$('#modal #deletePostBtn').on('click', function(e) {
 		e.preventDefault();
 		
 		let postId = $('#modal').data('post-id');
-		// alert(postId);
+		//alert(postId);
 		
+		// ajax 글 삭제
 		$.ajax({
 			type:"delete"
-			, url:"post/delete"
-			, data:{"postId":postId}
-			, success:function(data) {
+			, url:"/post/delete"
+			, data: {"postId":postId}
+			, success: function(data) {
 				if (data.code == 1) {
-					alert("삭제되었습니다.");
-					location.href = "/timeline/timeline_view";
+					location.reload(true);
 				} else {
-					alert(data.errormessage);
+					alert(data.errorMessage);
 				}
 			}
-			, error:function(request, status, error) {
-				alert("메모를 삭제하는데 실패했습니다");
+			, error: function(e) {
+				alert("삭제하는데 실패했습니다. 관리자에게 문의해주세요.");
 			}
-		})
+		});
 	});
 });
 </script>

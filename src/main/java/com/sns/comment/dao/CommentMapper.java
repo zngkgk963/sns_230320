@@ -18,4 +18,6 @@ public interface CommentMapper {
 	public List<Comment> selectCommentListByPostId(int postId);
 	
 	public void deleteCommentById(int commentId);
+	
+	public void deleteCommentsByPostId(int postId);
 }
